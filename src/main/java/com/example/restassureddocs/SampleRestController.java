@@ -13,7 +13,7 @@ import java.util.Optional;
 public class SampleRestController {
 
     @PostMapping(value = "/process", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Output saveAllConsumers(@RequestBody final Input input) {
+    public Output process(@RequestBody final Input input) {
         if (Optional.ofNullable(input.getId()).orElse(0L) > 0) {
             return new Output(true, "Received: " + input);
         } else {
