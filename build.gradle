@@ -1,0 +1,131 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.4.RELEASE'
+        asciidoctorPluginVersion = '1.5.3'
+	}
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+	}
+	dependencies {
+        classpath(
+                [ group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: springBootVersion ],
+                [ group: 'org.asciidoctor', name: 'asciidoctor-gradle-plugin', version: asciidoctorPluginVersion ]
+        )
+	}
+}
+
+apply plugin: 'java'
+apply plugin: org.springframework.boot.gradle.plugin.SpringBootPlugin
+apply plugin: io.spring.gradle.dependencymanagement.DependencyManagementPlugin
+apply plugin: org.asciidoctor.gradle.AsciidoctorPlugin
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+ext {
+    springCloudVersion = 'Dalston.SR1'
+    assertJVersion = '3.6.2'
+    junitParamsVersion = '1.1.0'
+    restAssuredVersion = '3.0.1'
+    commonsLang3Version = '3.5'
+    wireMockVersion = '2.5.1'
+    lombokVersion = '1.16.16'
+    jaxbXjcVersion = '2.2.11'
+    mapStructVersion = '1.2.0.Beta2'
+    xmlUnitVersion = '2.3.0'
+    powerMockVersion = '1.6.6'
+    dbUnitVersion = '2.5.3'
+    springDBUnitVersion = '1.2.0'
+    guavaVersion = '22.0'
+
+    snippetsDir = file('build/generated-snippets')
+
+    springBootBasicWebAppDependencies = [
+            [group: 'org.springframework.boot', name: 'spring-boot-starter-web'],
+            [group: 'org.springframework.boot', name: 'spring-boot-starter-security'],
+            [group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'],
+            [group: 'org.springframework.boot', name: 'spring-boot-starter-undertow'],
+    ]
+
+    commonsLang3Dependencies = [
+            [group: 'org.apache.commons', name: 'commons-lang3', version: commonsLang3Version],
+    ]
+    guavaDependencies = [
+            [group: 'com.google.guava', name: 'guava', version: guavaVersion]
+    ]
+    lombokDependencies = [[group: 'org.projectlombok', name: 'lombok', version: lombokVersion]]
+
+    wireMockDependencies = [
+            [group: 'com.github.tomakehurst', name: 'wiremock-standalone', version: wireMockVersion]
+    ]
+    jaxbXjcDependencies = [
+            [group: 'org.glassfish.jaxb', name: 'jaxb-xjc', version: jaxbXjcVersion],
+            [group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: jaxbXjcVersion]
+    ]
+    mapStructDependencies = [
+            [group: 'org.mapstruct', name: 'mapstruct-jdk8', version: mapStructVersion],
+            [group: 'org.mapstruct', name: 'mapstruct-processor', version: mapStructVersion],
+    ]
+    xmlUnitDependencies = [
+            "org.xmlunit:xmlunit-matchers:${xmlUnitVersion}",
+            "org.xmlunit:xmlunit-core:${xmlUnitVersion}"
+    ]
+    powerMockDependencies = [
+            "org.powermock:powermock-api-mockito:${powerMockVersion}",
+            "org.powermock:powermock-module-junit4:${powerMockVersion}"
+
+    ]
+    jacksonJavaTimeModuleDependencies = [
+            [group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310']
+    ]
+    dbUnitDependencies = [
+            [ group: 'org.dbunit', name: 'dbunit', version: dbUnitVersion ],
+            [ group: 'com.github.springtestdbunit', name: 'spring-test-dbunit', version: springDBUnitVersion ]
+    ]
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    maven { url "https://repo.spring.io/libs-release/" }
+}
+
+// Do not inline this variable. asciidoctor uses it inside
+ext['spring-restdocs.version'] = '1.2.1.RELEASE'
+
+dependencies {
+    compile(
+            springBootBasicWebAppDependencies,
+            commonsLang3Dependencies,
+            lombokDependencies,
+            mapStructDependencies,
+            guavaDependencies
+    )
+
+    testCompile(
+            [group: 'pl.pragmatists', name: 'JUnitParams', version: junitParamsVersion],
+            [group: 'io.rest-assured', name: 'rest-assured', version: restAssuredVersion],
+            [group: 'org.assertj', name: 'assertj-core', version: assertJVersion],
+            [group: 'org.springframework', name: 'spring-test'],
+            [group: 'org.springframework.restdocs', name: 'spring-restdocs-restassured']
+    )
+    testCompile(group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
+        exclude group: 'org.assertj', module: 'assertj-core'
+    }
+
+    asciidoctor "org.springframework.restdocs:spring-restdocs-asciidoctor:${project.'spring-restdocs.version'}"
+}
+
+test {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    attributes 'snippets': snippetsDir
+    inputs.dir snippetsDir
+    dependsOn test
+}

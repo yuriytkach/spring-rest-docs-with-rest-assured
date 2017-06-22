@@ -1,0 +1,41 @@
+= Sample Rest Service
+Example;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+= Introduction
+
+*Sample Rest Service* can accept simple request and return response based on the input provided:
+
+- If the input contains and id that is greater than zero, then response returned with valid status and input is duplicated
+- If the input contains id that is zero or less, or missing and id, then response returned with invalid status and input is duplicated
+
+== HTTP status codes
+*Sample Rest Service* tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP status codes.
+
+= Resources
+
+== cURL example
+
+include::{snippets}/process-valid-request/curl-request.adoc[]
+
+== Request body
+
+include::{snippets}/process-valid-request/request-body.adoc[]
+include::{snippets}/process-valid-request/request-fields.adoc[]
+
+== Response body
+
+include::{snippets}/process-valid-response/response-body.adoc[]
+include::{snippets}/process-valid-response/response-fields.adoc[]
+
+== Invalid request
+include::{snippets}/process-invalid-request/request-body.adoc[]
+
+== Invalid response
+include::{snippets}/process-invalid-response/response-body.adoc[]
