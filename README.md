@@ -1,6 +1,6 @@
 # spring-rest-docs-with-rest-assured
 
-Sample project that shows the use of spring rest docs with rest assured library.
+Sample project that shows the use of [Spring REST Docs](https://projects.spring.io/spring-restdocs/) with [REST Assured](http://rest-assured.io/) library.
 
 The output produced by rest docs can be viewed here: https://yuriytkach.github.io/spring-rest-docs-with-rest-assured/
 
