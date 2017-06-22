@@ -9,3 +9,7 @@ To run the code, checkout, cd to the directory, and execute:
 `./gradlew asciidoctor`
 
 This will execute tests and produce the html file documenting rest service. Search for the file in `build/asciidoc/html5/index.html`
+
+You can also run the rest web service by executing:
+
+`./gradlew bootRun`
